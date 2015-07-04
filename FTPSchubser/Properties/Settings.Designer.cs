@@ -158,12 +158,12 @@ namespace FTPSchubser.Properties {
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("True")]
-        public bool UpgradeTo2101 {
+        public bool UpgradeTo2102 {
             get {
-                return ((bool)(this["UpgradeTo2101"]));
+                return ((bool)(this["UpgradeTo2102"]));
             }
             set {
-                this["UpgradeTo2101"] = value;
+                this["UpgradeTo2102"] = value;
             }
         }
     }

@@ -35,7 +35,7 @@
     <Setting Name="prompt_overwrite" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">True</Value>
     </Setting>
-    <Setting Name="UpgradeTo2101" Type="System.Boolean" Scope="User">
+    <Setting Name="UpgradeTo2102" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">True</Value>
     </Setting>
   </Settings>

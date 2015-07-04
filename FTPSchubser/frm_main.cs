@@ -294,11 +294,11 @@ namespace FTPSchubser
 
                     if (this.txt_url.Text != string.Empty)
                     {
-                        this.clip.Add(string.Format("{0}{1}", (object)Settings.Default.url, HttpUtility.UrlEncode(Path.GetFileName(filenameToUpload))));
+                        this.clip.Add(string.Format("{0}{1}", (object)Settings.Default.url, Helper.EncodeFileName(Path.GetFileName(filenameToUpload))));
                     }
                     else
                     {
-                        this.clip.Add(string.Format("http://{0}/{1}{2}", (object)Settings.Default.host, Settings.Default.folder == "" ? (object)"" : (object)(Settings.Default.folder + "/"), HttpUtility.UrlEncode(Path.GetFileName(filenameToUpload))));
+                        this.clip.Add(string.Format("http://{0}/{1}{2}", (object)Settings.Default.host, Settings.Default.folder == "" ? (object)"" : (object)(Settings.Default.folder + "/"), Helper.EncodeFileName(Path.GetFileName(filenameToUpload))));
                     }
                 }
             }
@@ -428,10 +428,10 @@ namespace FTPSchubser
 
         private void frm_main_Load(object sender, EventArgs e)
         {
-            if (Settings.Default.UpgradeTo2101)
+            if (Settings.Default.UpgradeTo2102)
             {
                 Settings.Default.Upgrade();
-                Settings.Default.UpgradeTo2101 = false;
+                Settings.Default.UpgradeTo2102 = false;
                 Settings.Default.Save();
             }
             this.txt_host.Text = Settings.Default.host;
