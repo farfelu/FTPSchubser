@@ -1,6 +1,7 @@
 ﻿using FTPSchubser.Properties;
 using ICSharpCode.SharpZipLib.Core;
 using ICSharpCode.SharpZipLib.Zip;
+using ImageMagick;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -34,6 +35,8 @@ namespace FTPSchubser
         private int curfilecount;
         private XmlDocument xmlDoc;
         private TaskbarItemInfo tbInfo;
+
+        private string tempPath = Path.Combine(Path.GetTempPath(), "FTPSchubser");
 
         public frm_main(string[] args)
         {
@@ -194,6 +197,14 @@ namespace FTPSchubser
                         zipped = true;
 
                     }
+                    // very bad image check
+                    else if (Path.GetExtension(filenameToUpload).ToLower() == ".jpg")
+                    {
+                        //only downscale if set, but save new anyway because imagemagick does a lot better job with saving jpg.
+                        var toSize = this.cb_downscale.Checked ? (int)this.num_downscale.Value : 0;
+
+                        fileToUpload = DownscaleImage(fileToUpload, toSize);
+                    }
 
                     var ftpFilePath = string.Format("ftp://{0}:{1}/{2}{3}",
                             (object)Settings.Default.host,
@@ -346,8 +357,12 @@ namespace FTPSchubser
                     str1 = string.Format("{0}{1}\n", (object)str1, (object)str2);
                 Clipboard.SetDataObject((object)str1, true);
             }
+
+            Directory.Delete(this.tempPath, true);
             if (!this.arg)
                 return;
+
+
             Environment.Exit(0);
         }
 
@@ -611,6 +626,35 @@ namespace FTPSchubser
 
             this.lbl_downscale.Enabled = chk;
             this.num_downscale.Enabled = chk;
+        }
+
+        private string DownscaleImage(string file, int maxSize)
+        {
+            using (MagickImage image = new MagickImage(file))
+            {
+                var tempDir = Path.Combine(this.tempPath, Guid.NewGuid().ToString());
+                Directory.CreateDirectory(tempDir);
+
+                var tempFile = Path.Combine(tempDir, Path.GetFileName(file));
+
+                if (maxSize > 0)
+                {
+                    image.Resize(maxSize, maxSize);
+                }
+                image.Quality = 88;
+                image.Write(tempFile);
+
+                var originalFileSize = new FileInfo(file).Length;
+                var newFileSize = new FileInfo(tempFile).Length;
+
+                // not very graceful, but if we are just saving it again, check afterwards if we actually did reduce the filesize, otherwise just return old file
+                if (maxSize == 0 && newFileSize > originalFileSize)
+                {
+                    return file;
+                }
+
+                return tempFile;
+            }
         }
     }
 }
