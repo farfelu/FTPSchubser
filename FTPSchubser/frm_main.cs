@@ -201,7 +201,7 @@ namespace FTPSchubser
                     else if (Path.GetExtension(filenameToUpload).ToLower() == ".jpg")
                     {
                         //only downscale if set, but save new anyway because imagemagick does a lot better job with saving jpg.
-                        var toSize = this.cb_downscale.Checked ? (int)this.num_downscale.Value : 0;
+                        var toSize = Settings.Default.downscale ? Settings.Default.downscale_size : 0;
 
                         fileToUpload = DownscaleImage(fileToUpload, toSize);
                     }
