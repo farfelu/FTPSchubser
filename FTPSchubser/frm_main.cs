@@ -356,7 +356,7 @@ namespace FTPSchubser
             int num1 = 7;
             if (!this.showsettings)
             {
-                int num2 = 460;
+                int num2 = 565;
                 if (this.Height < num2)
                 {
                     frm_main frmMain = this;
@@ -446,6 +446,9 @@ namespace FTPSchubser
             this.cb_shorten.Enabled = Settings.Default.clipboard;
             this.rdb_bitly.Enabled = this.cb_shorten.Enabled && this.cb_shorten.Checked;
             this.rdb_googl.Enabled = this.cb_shorten.Enabled && this.cb_shorten.Checked;
+            this.lbl_downscale.Enabled = this.cb_downscale.Checked;
+            this.num_downscale.Enabled = this.cb_downscale.Checked;
+
             if (Settings.Default.shortenservice == 1)
             {
                 this.rdb_bitly.Checked = false;
@@ -596,6 +599,14 @@ namespace FTPSchubser
                 this.rdb_googl.Enabled = false;
                 this.rdb_bitly.Enabled = false;
             }
+        }
+
+        private void cb_downscale_CheckedChanged(object sender, EventArgs e)
+        {
+            bool chk = this.cb_downscale.Checked;
+
+            this.lbl_downscale.Enabled = chk;
+            this.num_downscale.Enabled = chk;
         }
     }
 }

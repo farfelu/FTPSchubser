@@ -59,7 +59,11 @@ namespace FTPSchubser
             this.txt_url = new System.Windows.Forms.TextBox();
             this.lbl_urlpreview = new System.Windows.Forms.Label();
             this.cb_overwrite = new System.Windows.Forms.CheckBox();
+            this.cb_downscale = new System.Windows.Forms.CheckBox();
+            this.num_downscale = new System.Windows.Forms.NumericUpDown();
+            this.lbl_downscale = new System.Windows.Forms.Label();
             this.p_dropzone.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.num_downscale)).BeginInit();
             this.SuspendLayout();
             // 
             // label1
@@ -104,10 +108,10 @@ namespace FTPSchubser
             // 
             // btn_save
             // 
-            this.btn_save.Location = new System.Drawing.Point(186, 402);
+            this.btn_save.Location = new System.Drawing.Point(186, 500);
             this.btn_save.Name = "btn_save";
             this.btn_save.Size = new System.Drawing.Size(75, 23);
-            this.btn_save.TabIndex = 13;
+            this.btn_save.TabIndex = 15;
             this.btn_save.Text = "Save";
             this.btn_save.UseVisualStyleBackColor = true;
             this.btn_save.Click += new System.EventHandler(this.btn_save_Click);
@@ -159,7 +163,7 @@ namespace FTPSchubser
             this.cb_passive.CheckState = System.Windows.Forms.CheckState.Checked;
             this.cb_passive.Location = new System.Drawing.Point(186, 187);
             this.cb_passive.Name = "cb_passive";
-            this.cb_passive.Size = new System.Drawing.Size(52, 17);
+            this.cb_passive.Size = new System.Drawing.Size(51, 17);
             this.cb_passive.TabIndex = 5;
             this.cb_passive.Text = "PASV";
             this.cb_passive.UseVisualStyleBackColor = true;
@@ -227,7 +231,7 @@ namespace FTPSchubser
             this.cb_clip.AutoSize = true;
             this.cb_clip.Checked = true;
             this.cb_clip.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.cb_clip.Location = new System.Drawing.Point(36, 352);
+            this.cb_clip.Location = new System.Drawing.Point(36, 349);
             this.cb_clip.Name = "cb_clip";
             this.cb_clip.Size = new System.Drawing.Size(146, 17);
             this.cb_clip.TabIndex = 9;
@@ -306,16 +310,64 @@ namespace FTPSchubser
             this.cb_overwrite.AutoSize = true;
             this.cb_overwrite.Checked = true;
             this.cb_overwrite.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.cb_overwrite.Location = new System.Drawing.Point(36, 329);
+            this.cb_overwrite.Location = new System.Drawing.Point(36, 326);
             this.cb_overwrite.Name = "cb_overwrite";
             this.cb_overwrite.Size = new System.Drawing.Size(166, 17);
             this.cb_overwrite.TabIndex = 8;
             this.cb_overwrite.Text = "ask before overwriting files";
             this.cb_overwrite.UseVisualStyleBackColor = true;
             // 
+            // cb_downscale
+            // 
+            this.cb_downscale.AutoSize = true;
+            this.cb_downscale.Location = new System.Drawing.Point(36, 428);
+            this.cb_downscale.Name = "cb_downscale";
+            this.cb_downscale.Size = new System.Drawing.Size(141, 17);
+            this.cb_downscale.TabIndex = 13;
+            this.cb_downscale.Text = "downscale JPG images";
+            this.cb_downscale.UseVisualStyleBackColor = true;
+            this.cb_downscale.CheckedChanged += new System.EventHandler(this.cb_downscale_CheckedChanged);
+            // 
+            // num_downscale
+            // 
+            this.num_downscale.Enabled = false;
+            this.num_downscale.Location = new System.Drawing.Point(82, 477);
+            this.num_downscale.Maximum = new decimal(new int[] {
+            9999,
+            0,
+            0,
+            0});
+            this.num_downscale.Minimum = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
+            this.num_downscale.Name = "num_downscale";
+            this.num_downscale.Size = new System.Drawing.Size(59, 22);
+            this.num_downscale.TabIndex = 14;
+            this.num_downscale.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
+            this.num_downscale.Value = new decimal(new int[] {
+            1024,
+            0,
+            0,
+            0});
+            // 
+            // lbl_downscale
+            // 
+            this.lbl_downscale.AutoSize = true;
+            this.lbl_downscale.Enabled = false;
+            this.lbl_downscale.Location = new System.Drawing.Point(63, 448);
+            this.lbl_downscale.Name = "lbl_downscale";
+            this.lbl_downscale.Size = new System.Drawing.Size(109, 26);
+            this.lbl_downscale.TabIndex = 28;
+            this.lbl_downscale.Text = "max width/height\r\n(keeps aspect ratio):";
+            // 
             // frm_main
             // 
-            this.ClientSize = new System.Drawing.Size(263, 437);
+            this.ClientSize = new System.Drawing.Size(263, 535);
+            this.Controls.Add(this.lbl_downscale);
+            this.Controls.Add(this.num_downscale);
+            this.Controls.Add(this.cb_downscale);
             this.Controls.Add(this.cb_overwrite);
             this.Controls.Add(this.lbl_urlpreview);
             this.Controls.Add(this.label2);
@@ -348,6 +400,7 @@ namespace FTPSchubser
             this.TopMost = true;
             this.Load += new System.EventHandler(this.frm_main_Load);
             this.p_dropzone.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.num_downscale)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -382,6 +435,9 @@ namespace FTPSchubser
         private TextBox txt_url;
         private Label lbl_urlpreview;
         private CheckBox cb_overwrite;
+        private CheckBox cb_downscale;
+        private NumericUpDown num_downscale;
+        private Label lbl_downscale;
     }
 }
 
