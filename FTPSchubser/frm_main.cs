@@ -358,7 +358,10 @@ namespace FTPSchubser
                 Clipboard.SetDataObject((object)str1, true);
             }
 
-            Directory.Delete(this.tempPath, true);
+            if (Directory.Exists(this.tempPath))
+            {
+                Directory.Delete(this.tempPath, true);
+            }
             if (!this.arg)
                 return;
 
