@@ -35,8 +35,14 @@
     <Setting Name="prompt_overwrite" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">True</Value>
     </Setting>
-    <Setting Name="UpgradeTo2102" Type="System.Boolean" Scope="User">
+    <Setting Name="UpgradeTo2200" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">True</Value>
+    </Setting>
+    <Setting Name="downscale" Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">False</Value>
+    </Setting>
+    <Setting Name="downscale_size" Type="System.Int32" Scope="User">
+      <Value Profile="(Default)">1024</Value>
     </Setting>
   </Settings>
 </SettingsFile>

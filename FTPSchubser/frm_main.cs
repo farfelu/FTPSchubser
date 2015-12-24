@@ -412,6 +412,8 @@ namespace FTPSchubser
                 Settings.Default.url = this.txt_url.Text;
                 Settings.Default.shortenservice = this.rdb_googl.Checked ? 1 : 0;
                 Settings.Default.prompt_overwrite = this.cb_overwrite.Checked;
+                Settings.Default.downscale = this.cb_downscale.Checked;
+                Settings.Default.downscale_size = (int)this.num_downscale.Value;
                 Settings.Default.Save();
                 Settings.Default.Reload();
                 if (!this.showsettings)
@@ -446,6 +448,8 @@ namespace FTPSchubser
             this.cb_shorten.Enabled = Settings.Default.clipboard;
             this.rdb_bitly.Enabled = this.cb_shorten.Enabled && this.cb_shorten.Checked;
             this.rdb_googl.Enabled = this.cb_shorten.Enabled && this.cb_shorten.Checked;
+            this.cb_downscale.Checked = Settings.Default.downscale;
+            this.num_downscale.Value = Settings.Default.downscale_size;
             this.lbl_downscale.Enabled = this.cb_downscale.Checked;
             this.num_downscale.Enabled = this.cb_downscale.Checked;
 
