@@ -1,6 +1,7 @@
 ﻿using FTPSchubser.Properties;
 using ICSharpCode.SharpZipLib.Core;
 using ICSharpCode.SharpZipLib.Zip;
+using ImageMagick;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -34,6 +35,8 @@ namespace FTPSchubser
         private int curfilecount;
         private XmlDocument xmlDoc;
         private TaskbarItemInfo tbInfo;
+
+        private string tempPath = Path.Combine(Path.GetTempPath(), "FTPSchubser");
 
         public frm_main(string[] args)
         {
@@ -194,6 +197,14 @@ namespace FTPSchubser
                         zipped = true;
 
                     }
+                    // very bad image check
+                    else if (Path.GetExtension(filenameToUpload).ToLower() == ".jpg")
+                    {
+                        //only downscale if set, but save new anyway because imagemagick does a lot better job with saving jpg.
+                        var toSize = Settings.Default.downscale ? Settings.Default.downscale_size : 0;
+
+                        fileToUpload = DownscaleImage(fileToUpload, toSize);
+                    }
 
                     var ftpFilePath = string.Format("ftp://{0}:{1}/{2}{3}",
                             (object)Settings.Default.host,
@@ -346,8 +357,12 @@ namespace FTPSchubser
                     str1 = string.Format("{0}{1}\n", (object)str1, (object)str2);
                 Clipboard.SetDataObject((object)str1, true);
             }
+
+            Directory.Delete(this.tempPath, true);
             if (!this.arg)
                 return;
+
+
             Environment.Exit(0);
         }
 
@@ -356,7 +371,7 @@ namespace FTPSchubser
             int num1 = 7;
             if (!this.showsettings)
             {
-                int num2 = 460;
+                int num2 = 565;
                 if (this.Height < num2)
                 {
                     frm_main frmMain = this;
@@ -412,6 +427,8 @@ namespace FTPSchubser
                 Settings.Default.url = this.txt_url.Text;
                 Settings.Default.shortenservice = this.rdb_googl.Checked ? 1 : 0;
                 Settings.Default.prompt_overwrite = this.cb_overwrite.Checked;
+                Settings.Default.downscale = this.cb_downscale.Checked;
+                Settings.Default.downscale_size = (int)this.num_downscale.Value;
                 Settings.Default.Save();
                 Settings.Default.Reload();
                 if (!this.showsettings)
@@ -428,10 +445,10 @@ namespace FTPSchubser
 
         private void frm_main_Load(object sender, EventArgs e)
         {
-            if (Settings.Default.UpgradeTo2102)
+            if (Settings.Default.UpgradeTo2200)
             {
                 Settings.Default.Upgrade();
-                Settings.Default.UpgradeTo2102 = false;
+                Settings.Default.UpgradeTo2200 = false;
                 Settings.Default.Save();
             }
             this.txt_host.Text = Settings.Default.host;
@@ -446,6 +463,11 @@ namespace FTPSchubser
             this.cb_shorten.Enabled = Settings.Default.clipboard;
             this.rdb_bitly.Enabled = this.cb_shorten.Enabled && this.cb_shorten.Checked;
             this.rdb_googl.Enabled = this.cb_shorten.Enabled && this.cb_shorten.Checked;
+            this.cb_downscale.Checked = Settings.Default.downscale;
+            this.num_downscale.Value = Settings.Default.downscale_size;
+            this.lbl_downscale.Enabled = this.cb_downscale.Checked;
+            this.num_downscale.Enabled = this.cb_downscale.Checked;
+
             if (Settings.Default.shortenservice == 1)
             {
                 this.rdb_bitly.Checked = false;
@@ -595,6 +617,43 @@ namespace FTPSchubser
             {
                 this.rdb_googl.Enabled = false;
                 this.rdb_bitly.Enabled = false;
+            }
+        }
+
+        private void cb_downscale_CheckedChanged(object sender, EventArgs e)
+        {
+            bool chk = this.cb_downscale.Checked;
+
+            this.lbl_downscale.Enabled = chk;
+            this.num_downscale.Enabled = chk;
+        }
+
+        private string DownscaleImage(string file, int maxSize)
+        {
+            using (MagickImage image = new MagickImage(file))
+            {
+                var tempDir = Path.Combine(this.tempPath, Guid.NewGuid().ToString());
+                Directory.CreateDirectory(tempDir);
+
+                var tempFile = Path.Combine(tempDir, Path.GetFileName(file));
+
+                if (maxSize > 0)
+                {
+                    image.Resize(maxSize, maxSize);
+                }
+                image.Quality = 88;
+                image.Write(tempFile);
+
+                var originalFileSize = new FileInfo(file).Length;
+                var newFileSize = new FileInfo(tempFile).Length;
+
+                // not very graceful, but if we are just saving it again, check afterwards if we actually did reduce the filesize, otherwise just return old file
+                if (maxSize == 0 && newFileSize > originalFileSize)
+                {
+                    return file;
+                }
+
+                return tempFile;
             }
         }
     }
