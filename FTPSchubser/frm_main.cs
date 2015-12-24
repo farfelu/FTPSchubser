@@ -430,10 +430,10 @@ namespace FTPSchubser
 
         private void frm_main_Load(object sender, EventArgs e)
         {
-            if (Settings.Default.UpgradeTo2102)
+            if (Settings.Default.UpgradeTo2200)
             {
                 Settings.Default.Upgrade();
-                Settings.Default.UpgradeTo2102 = false;
+                Settings.Default.UpgradeTo2200 = false;
                 Settings.Default.Save();
             }
             this.txt_host.Text = Settings.Default.host;
