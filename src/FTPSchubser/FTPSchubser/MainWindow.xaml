@@ -13,10 +13,19 @@
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
             <ColumnDefinition/>
-            <ColumnDefinition/>
         </Grid.ColumnDefinitions>
-        <Label Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="2" Content="dropzone" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" FontSize="32" />
-        <Button x:Name="button" Content="Button" Grid.Column="0" Grid.Row="1"/>
-        <ProgressBar x:Name="progress" Grid.Column="1" Grid.Row="1"/>
+        <Label Grid.Column="0" Grid.Row="0" Content="dropzone" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" FontSize="32" />
+        <Grid Grid.Column="0" Grid.Row="1" Margin="2,0,2,2">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition/>
+            </Grid.ColumnDefinitions>
+
+            <Button x:Name="btn_settings" Content="🛠" Grid.Column="0" Grid.Row="0" Margin="0,0,2,0" Padding="5,1"/>
+            <ProgressBar x:Name="progress" Grid.Column="1" Grid.Row="0" Margin="2,0,0,0"/>
+        </Grid>
     </Grid>
 </Window>
