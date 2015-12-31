@@ -45,14 +45,15 @@ namespace FTPSchubser.Helper
                 }
             }
 
-            var bytesTotal = fileInfos.Sum(x => x.Length);
-            var bytesDone = 0;
+            long bytesTotal = fileInfos.Sum(x => x.Length);
+            long bytesDone = 0;
             var filesTotal = fileInfos.Count;
             var filesDone = 0;
 
-
             foreach (var fileInfo in fileInfos)
             {
+                filesDone++;
+
                 var fileName = System.IO.Path.GetFileName(fileInfo.FullName);
                 var ftpUrl = Utils.FormatFTPUrl(Host, Path, fileName, Port);
 
@@ -67,14 +68,15 @@ namespace FTPSchubser.Helper
                 using (var fileStream = File.OpenRead(fileInfo.FullName))
                 using (var requestStream = await request.GetRequestStreamAsync())
                 {
-                    var buffer = new byte[1024 * 4]; // 4KiB cache
+                    var buffer = new byte[1024 * 1024]; // 1MiB cache
                     var readBytesCount = 0;
-
-
+                    
                     //used so we can measure how many bytes per second we transfer
-                    var watch = new Stopwatch();
-                    watch.Start();
-
+                    var timeHelper = new Stopwatch();                   
+                    
+                    timeHelper.Start();
+                    long bytesCounter = 0;
+                    long bytesPerSecond = 0;
                     while ((readBytesCount = await fileStream.ReadAsync(buffer, 0, buffer.Length)) > 0)
                     {
                         await requestStream.WriteAsync(buffer, 0, readBytesCount);
@@ -82,12 +84,21 @@ namespace FTPSchubser.Helper
 
                         if (progress != null)
                         {
-                            progress.Report(new FTPProgress(filesTotal, filesDone, bytesTotal, bytesDone, readBytesCount / watch.ElapsedMilliseconds));
+                            bytesCounter += readBytesCount;
+                            
+                            // reset helper every second
+                            if (timeHelper.ElapsedMilliseconds >= 1000)
+                            {
+                                bytesPerSecond = (long)Math.Floor(bytesCounter / (timeHelper.ElapsedMilliseconds / 1000d));
+                                bytesCounter = 0;
+                                timeHelper.Restart();
+                            }
+
+                            progress.Report(new FTPProgress(filesTotal, filesDone, bytesTotal, bytesDone, bytesPerSecond));
                         }
                     }
                 }
-
-                filesDone++;
+                progress.Report(new FTPProgress(filesTotal, filesDone, bytesTotal, bytesDone));
             }
         }
 
@@ -97,15 +108,15 @@ namespace FTPSchubser.Helper
             public int FilesDone { get; }
             public long BytesTotal { get; }
             public long BytesDone { get; }
-            public float BytesPercent
+            public double BytesPercent
             {
                 get
                 {
-                    return BytesTotal == 0 ? 0 : (BytesDone / BytesTotal);
+                    return BytesTotal == 0 ? 0 : ((double)BytesDone / (double)BytesTotal);
                 }
             }
 
-            public string TransferSpeed { get; }
+            public string TransferSpeed { get; } = "";
 
             public FTPProgress(int filesTotal, int filesDone, long bytesTotal, long bytesDone, long bytesPerSecond = -1)
             {
@@ -113,11 +124,15 @@ namespace FTPSchubser.Helper
                 FilesDone = filesDone;
                 BytesTotal = bytesTotal;
                 BytesDone = bytesDone;
-
-                if (bytesPerSecond >= 0)
+                if (bytesPerSecond > 0)
                 {
-                    TransferSpeed = $"{Utils.BytesToString(bytesPerSecond)}/s";
+                    TransferSpeed = $" {Utils.BytesToString(bytesPerSecond)}/s";
                 }
+            }
+
+            public override string ToString()
+            {
+                return $"File {FilesDone}/{FilesTotal} {Utils.BytesToString(BytesDone)}/{Utils.BytesToString(BytesTotal)} ({Math.Floor(BytesPercent * 100)}%){TransferSpeed}";
             }
         }
     }
