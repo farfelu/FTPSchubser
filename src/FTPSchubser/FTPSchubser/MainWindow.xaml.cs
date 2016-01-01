@@ -24,5 +24,10 @@ namespace FTPSchubser
         {
             InitializeComponent();
         }
+
+        private async void btn_settings_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
     }
 }
