@@ -66,13 +66,13 @@ namespace FTPSchubser.Helper
             return ret;
         }
 
-        public async Task<IEnumerable<string>> GetExistingFiles(IEnumerable<string> files)
+        public async Task<IEnumerable<UploadFile>> GetExistingFiles(IEnumerable<UploadFile> files)
         {
-            var ret = new List<string>(files);
+            var ret = new List<UploadFile>(files);
 
             foreach (var file in files)
             {
-                var fileName = System.IO.Path.GetFileName(file);
+                var fileName = System.IO.Path.GetFileName(file.FilePath);
                 var ftpUrl = Utils.FormatFTPUrl(Host, Path, fileName, Port);
                 
                 var request = CreateFTPRequest(ftpUrl, WebRequestMethods.Ftp.GetDateTimestamp);
@@ -94,36 +94,26 @@ namespace FTPSchubser.Helper
             return ret;
         }
 
-        public async Task<IEnumerable<string>> UploadFilesAsync(IEnumerable<string> files, IProgress<FTPProgress> progress = null)
+        public async Task<IEnumerable<UploadFile>> UploadFilesAsync(IEnumerable<UploadFile> files, IProgress<FTPProgress> progress = null)
         {
-            var fileInfos = new List<FileInfo>();
+            long bytesTotal = files.Sum(x => x.FileInfo.Length);
+            long bytesDone = 0;
+            var filesTotal = files.Count();
+            var filesDone = 0;
+
+            var ret = new List<UploadFile>();
 
             foreach (var file in files)
             {
-                if (File.Exists(file))
-                {
-                    fileInfos.Add(new FileInfo(file));
-                }
-            }
-
-            long bytesTotal = fileInfos.Sum(x => x.Length);
-            long bytesDone = 0;
-            var filesTotal = fileInfos.Count;
-            var filesDone = 0;
-
-            var ret = new List<string>();
-
-            foreach (var fileInfo in fileInfos)
-            {
                 filesDone++;
 
-                var fileName = System.IO.Path.GetFileName(fileInfo.FullName);
+                var fileName = file.UploadName;
                 var ftpUrl = Utils.FormatFTPUrl(Host, Path, fileName, Port);
 
                 // from https://msdn.microsoft.com/en-us/library/ms229715%28v=vs.110%29.aspx
                 var request = CreateFTPRequest(ftpUrl, WebRequestMethods.Ftp.UploadFile);
 
-                using (var fileStream = File.OpenRead(fileInfo.FullName))
+                using (var fileStream = File.OpenRead(file.FileInfo.FullName))
                 using (var requestStream = await request.GetRequestStreamAsync())
                 {
                     var buffer = new byte[1024 * 1024]; // 1MiB cache
@@ -156,7 +146,7 @@ namespace FTPSchubser.Helper
                         }
                     }
                 }
-                ret.Add(fileName);
+                ret.Add(file);
                 progress.Report(new FTPProgress(filesTotal, filesDone, bytesTotal, bytesDone));
             }
 

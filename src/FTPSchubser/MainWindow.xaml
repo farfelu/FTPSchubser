@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:FTPSchubser"
         mc:Ignorable="d"
-        Title="FTPSchubser" Height="180" Width="280" Topmost="True" ResizeMode="CanMinimize" AllowDrop="True" Drop="Window_Drop">
+        Title="FTPSchubser" Height="180" Width="340" Topmost="True" ResizeMode="CanMinimize" AllowDrop="True" Drop="Window_Drop">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition/>

@@ -27,9 +27,10 @@ namespace FTPSchubser.Helper
 
         public static string FormatHTTPUrl(string url, string host, string path, string fileName)
         {
+            fileName = Utils.EncodeFileName(fileName);
             if (string.IsNullOrWhiteSpace(url))
             {
-                return FormatUrl("http", host, path, "example.jpg");
+                return FormatUrl("http", host, path, fileName);
             }
             else
             {
@@ -39,7 +40,7 @@ namespace FTPSchubser.Helper
 
         public static bool IsDirectory(string filePath)
         {
-            if (!File.Exists(filePath))
+            if (!Directory.Exists(filePath))
             {
                 return false;
             }
@@ -48,7 +49,12 @@ namespace FTPSchubser.Helper
 
             return attr.HasFlag(FileAttributes.Directory);
         }
-        
+
+        public static string EncodeFileName(string fileName)
+        {
+            return Uri.EscapeDataString(fileName);
+        }
+
 
         // from http://stackoverflow.com/a/4975942
         public static string BytesToString(long byteCount)
