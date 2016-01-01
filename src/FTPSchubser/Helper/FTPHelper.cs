@@ -29,16 +29,21 @@ namespace FTPSchubser.Helper
             Pasv = pasv;
         }
 
-        public async Task<IEnumerable<FTPFile>> ListFilesAsync()
+        private FtpWebRequest CreateFTPRequest(string url, string method)
         {
-            var ftpUrl = Utils.FormatFTPUrl(Host, Path, null, Port);
-
-            // Get the object used to communicate with the server.
-            FtpWebRequest request = (FtpWebRequest)WebRequest.Create(ftpUrl);
-            request.Method = WebRequestMethods.Ftp.ListDirectoryDetails;
+            FtpWebRequest request = (FtpWebRequest)WebRequest.Create(url);
+            request.Method = method;
             request.UsePassive = Pasv;
             request.Credentials = new NetworkCredential(Username, Password);
 
+            return request;
+        }
+
+        public async Task<IEnumerable<FTPFile>> ListFilesAsync()
+        {
+            var ftpUrl = Utils.FormatFTPUrl(Host, Path, null, Port);
+            
+            var request = CreateFTPRequest(ftpUrl, WebRequestMethods.Ftp.ListDirectoryDetails);
             FtpWebResponse response = (FtpWebResponse)await request.GetResponseAsync();
 
             Stream responseStream = response.GetResponseStream();
@@ -61,9 +66,32 @@ namespace FTPSchubser.Helper
             return ret;
         }
 
-        public async Task<bool> FileExistsAsync(string fileName)
+        public async Task<IEnumerable<string>> GetExistingFiles(IEnumerable<string> files)
         {
-            return false;
+            var ret = new List<string>(files);
+
+            foreach (var file in files)
+            {
+                var fileName = System.IO.Path.GetFileName(file);
+                var ftpUrl = Utils.FormatFTPUrl(Host, Path, fileName, Port);
+                
+                var request = CreateFTPRequest(ftpUrl, WebRequestMethods.Ftp.GetDateTimestamp);
+
+                try
+                {
+                    var response = (FtpWebResponse)await request.GetResponseAsync();
+                }
+                catch (WebException ex)
+                {
+                    var response = (FtpWebResponse)ex.Response;
+                    if (response.StatusCode == FtpStatusCode.ActionNotTakenFileUnavailable)
+                    {
+                        ret.Remove(file);
+                    }
+                }
+            }
+
+            return ret;
         }
 
         public async Task UploadFilesAsync(IEnumerable<string> files, IProgress<FTPProgress> progress = null)
@@ -91,12 +119,7 @@ namespace FTPSchubser.Helper
                 var ftpUrl = Utils.FormatFTPUrl(Host, Path, fileName, Port);
 
                 // from https://msdn.microsoft.com/en-us/library/ms229715%28v=vs.110%29.aspx
-                // Get the object used to communicate with the server.
-                var request = (FtpWebRequest)WebRequest.Create(ftpUrl);
-
-                request.Method = WebRequestMethods.Ftp.UploadFile;
-                request.UsePassive = Pasv;
-                request.Credentials = new NetworkCredential(Username, Password);
+                var request = CreateFTPRequest(ftpUrl, WebRequestMethods.Ftp.UploadFile);
 
                 using (var fileStream = File.OpenRead(fileInfo.FullName))
                 using (var requestStream = await request.GetRequestStreamAsync())
