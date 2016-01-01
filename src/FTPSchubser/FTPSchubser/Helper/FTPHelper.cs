@@ -5,6 +5,7 @@ using System.IO;
 using System.Linq;
 using System.Net;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
 namespace FTPSchubser.Helper
@@ -26,6 +27,38 @@ namespace FTPSchubser.Helper
             Path = path;
             Port = port;
             Pasv = pasv;
+        }
+
+        public async Task<IEnumerable<FTPFile>> ListFilesAsync()
+        {
+            var ftpUrl = Utils.FormatFTPUrl(Host, Path, null, Port);
+
+            // Get the object used to communicate with the server.
+            FtpWebRequest request = (FtpWebRequest)WebRequest.Create(ftpUrl);
+            request.Method = WebRequestMethods.Ftp.ListDirectoryDetails;
+            request.UsePassive = Pasv;
+            request.Credentials = new NetworkCredential(Username, Password);
+
+            FtpWebResponse response = (FtpWebResponse)await request.GetResponseAsync();
+
+            Stream responseStream = response.GetResponseStream();
+            StreamReader reader = new StreamReader(responseStream);
+            string line = null;
+
+            var ret = new List<FTPFile>();
+            while ((line = await reader.ReadLineAsync()) != null)
+            {
+                var file = FTPFile.CreateFTPFile(line);
+                if (file != null)
+                {
+                    ret.Add(file);
+                }
+            }
+
+            reader.Close();
+            response.Close();
+
+            return ret;
         }
 
         public async Task<bool> FileExistsAsync(string fileName)
@@ -99,6 +132,98 @@ namespace FTPSchubser.Helper
                     }
                 }
                 progress.Report(new FTPProgress(filesTotal, filesDone, bytesTotal, bytesDone));
+            }
+        }
+
+        public class FTPFile
+        {
+            public bool IsDirectory { get; set; }
+            public string Permissions { get; set; }
+            public string Owner { get; set; }
+            public string Group { get; set; }
+            public int FileCode { get; set; }
+            public long Size { get; set; }
+            public DateTime? Timestamp { get; set; }
+            public string Filename { get; set; }
+
+            public static FTPFile CreateFTPFile(string listLine)
+            {
+                var regex = new Regex(  @"^" +                                          // start of the line
+                                        @"(?<dir>[\-ld])" +                             // match directory flag
+                                        @"(?<permissions>([\-r][\-w][\-xs]){3})" +      // match owner/group/other unix permissions
+                                        @"\s+" +                                        // match whitespace
+                                        @"(?<filecode>\d+)" +                           // match filecode
+                                        @"\s+" +                                        //
+                                        @"(?<owner>[\w\-]+)" +                          // match owner
+                                        @"\s+" +                                        // 
+                                        @"(?<group>[\w\-]+)" +                          // match group
+                                        @"\s+" +                                        //
+                                        @"(?<size>\d+)" +                               // match size in bytes
+                                        @"\s+" +                                        //
+                                        @"(?<timestamp>" +                              // start match timestamp, two formats
+                                            @"(?:" +                                    // non matching group for format: Dec 31 18:27
+                                                @"(?<month>\w{3})" +                    // match month name
+                                                @"\s+" +                                //
+                                                @"(?<day>\d{2})" +                      // match day
+                                                @"\s+" +                                //
+                                                @"(?<hours>\d{1,2}):(?<minutes>\d{2})" +  // match hours:minutes
+                                            @")" +                                      //
+                                            @"|" +                                      // or other date format without time but with year: Dec 31 2015
+                                            @"(?:" +                                    //
+                                                @"(?<month>\w{3})" +                    //
+                                                @"\s+" +                                //
+                                                @"(?<day>\d{1,2})" +                    //
+                                                @"\s+" +                                //
+                                                @"(?<year>\d{4})" +                     //
+                                            @")" +                                      //
+                                        @")" +                                          // end of timestamp
+                                        @"\s+" +                                        //
+                                        @"(?<filename>.+)" +                                // match filename
+                                        @"$"                                            // end of line
+                                        , RegexOptions.IgnoreCase);
+
+                var match = regex.Match(listLine);
+
+                if (!match.Success)
+                {
+                    return null;
+                }
+
+                // try to figure out timestamp
+                var timestampString = match.Groups["timestamp"].Value;
+                DateTime timestampTemp;
+                DateTime? timestamp = null;
+                if (DateTime.TryParse(timestampString, out timestampTemp))
+                {
+                    timestamp = timestampTemp;
+                }
+                else
+                {
+                    // didn't work, so we try adding current year to it
+                    if (DateTime.TryParseExact(timestampString + $" {DateTime.Now.Year}", "MMM dd HH:mm yyyy", null, System.Globalization.DateTimeStyles.None, out timestampTemp))
+                    {
+                        // it worked! now check if it isn't in the future, if so, use the last year...
+                        if (DateTime.Now < timestampTemp)
+                        {
+                            // date is now in the future, so subtract a year.
+                            timestampTemp = timestampTemp.AddYears(-1);
+                        }
+
+                        timestamp = timestampTemp;
+                    }
+                }
+
+                return new FTPFile()
+                {
+                    IsDirectory = match.Groups["dir"].Value == "d",
+                    Permissions = match.Groups["permissions"].Value,
+                    FileCode = int.Parse(match.Groups["filecode"].Value),
+                    Owner = match.Groups["owner"].Value,
+                    Group = match.Groups["group"].Value,
+                    Size = long.Parse(match.Groups["size"].Value),
+                    Timestamp = timestamp,
+                    Filename = match.Groups["filename"].Value
+                };
             }
         }
 
