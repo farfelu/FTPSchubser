@@ -24,10 +24,19 @@ namespace FTPSchubser.Helper
             return FormatUrl("ftp", host, path, fileName, port);
         }
 
-        public static string FormatHTTPUrl(string url, string fileName)
+        public static string FormatHTTPUrl(string url, string host, string path, string fileName)
         {
-            return $"{url}{fileName}";
+            if (string.IsNullOrWhiteSpace(url))
+            {
+                return FormatUrl("http", host, path, "example.jpg");
+            }
+            else
+            {
+                return $"{url}{fileName}";
+            }
+
         }
+        
 
         // from http://stackoverflow.com/a/4975942
         public static string BytesToString(long byteCount)

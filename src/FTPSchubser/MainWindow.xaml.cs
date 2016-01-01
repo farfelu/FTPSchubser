@@ -51,7 +51,7 @@ namespace FTPSchubser
         private async Task UploadFilesAsync(IEnumerable<string> files, bool fromCommandline = false)
         {
             resetProgressBar();
-            var fileList = files.ToList();
+            var fileList = files.OrderBy(x => x).ToList();
             var ftp = new Helper.FTPHelper(App.Settings.Host, App.Settings.User, App.Settings.Password, App.Settings.ServerPath, App.Settings.Port, App.Settings.PassiveMode);
 
             if (App.Settings.CheckOverwrite)
@@ -70,12 +70,25 @@ namespace FTPSchubser
                 progress_bar.IsIndeterminate = false;
             }
 
-            await ftp.UploadFilesAsync(fileList, new Progress<Helper.FTPHelper.FTPProgress>((x =>
+            var uploadedFiles = await ftp.UploadFilesAsync(fileList, new Progress<Helper.FTPHelper.FTPProgress>((x =>
             {
                 progress_bar.Maximum = x.BytesTotal;
                 progress_bar.Value = x.BytesDone;
                 progress_label.Content = x.ToString();
             })));
+
+            if (App.Settings.CopyClipboard)
+            {
+                var urls = uploadedFiles.Select(x => Helper.Utils.FormatHTTPUrl(App.Settings.UrlPath, App.Settings.Host, App.Settings.ServerPath, x));
+
+                if (App.Settings.Minify)
+                {
+                    urls = await Helper.URLHelper.ShortenUrlsAsync(urls);
+                }
+
+                // always add newline at the end
+                Clipboard.SetText(string.Join("\r\n", urls) + "\r\n");
+            }
 
             resetProgressBar();
 

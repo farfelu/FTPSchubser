@@ -94,7 +94,7 @@ namespace FTPSchubser.Helper
             return ret;
         }
 
-        public async Task UploadFilesAsync(IEnumerable<string> files, IProgress<FTPProgress> progress = null)
+        public async Task<IEnumerable<string>> UploadFilesAsync(IEnumerable<string> files, IProgress<FTPProgress> progress = null)
         {
             var fileInfos = new List<FileInfo>();
 
@@ -110,6 +110,8 @@ namespace FTPSchubser.Helper
             long bytesDone = 0;
             var filesTotal = fileInfos.Count;
             var filesDone = 0;
+
+            var ret = new List<string>();
 
             foreach (var fileInfo in fileInfos)
             {
@@ -154,8 +156,11 @@ namespace FTPSchubser.Helper
                         }
                     }
                 }
+                ret.Add(fileName);
                 progress.Report(new FTPProgress(filesTotal, filesDone, bytesTotal, bytesDone));
             }
+
+            return ret;
         }
 
         public class FTPFile

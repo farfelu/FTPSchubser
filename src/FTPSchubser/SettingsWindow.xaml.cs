@@ -50,19 +50,7 @@ namespace FTPSchubser
             }
 
             lblServerPathPreview.Content = Helper.Utils.FormatFTPUrl(txtHost.Text, txtServerPath.Text, "example.jpg", port);
-
-            if (string.IsNullOrWhiteSpace(txtUrlPath.Text))
-            {
-                lblUrlPathPreview.Content = Helper.Utils.FormatUrl("http", txtHost.Text, txtServerPath.Text, "example.jpg");
-            }
-            else
-            {
-                lblUrlPathPreview.Content = Helper.Utils.FormatHTTPUrl(txtUrlPath.Text, "example.jpg");
-            }
-        }
-
-        private void updateUrlPathLabel(object sender, TextChangedEventArgs e)
-        {
+            lblUrlPathPreview.Content = Helper.Utils.FormatHTTPUrl(txtUrlPath.Text, txtHost.Text, txtServerPath.Text, "example.jpg");
         }
 
         private void btn_save_Click(object sender, RoutedEventArgs e)
