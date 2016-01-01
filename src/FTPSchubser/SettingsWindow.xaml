@@ -83,7 +83,7 @@
 
             <CheckBox Grid.Row="12" Grid.Column="1" x:Name="cbMinify" Content="minify links using goo.gl" VerticalAlignment="Center" />
 
-            <CheckBox Grid.Row="13" Grid.Column="1" x:Name="cbKeepOpen" Content="keep window open after upload" VerticalAlignment="Center" />
+            <CheckBox Grid.Row="13" Grid.Column="1" x:Name="cbKeepWindowOpen" Content="keep window open after upload" VerticalAlignment="Center" />
         </Grid>
 
 

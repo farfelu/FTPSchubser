@@ -13,5 +13,11 @@ namespace FTPSchubser
     /// </summary>
     public partial class App : Application
     {
+        internal static Helper.SettingsHelper Settings { get; private set; } 
+
+        public App()
+        {
+            Settings = new Helper.SettingsHelper();
+        }
     }
 }

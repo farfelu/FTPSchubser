@@ -146,12 +146,36 @@ namespace FTPSchubser.Properties {
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("True")]
-        public bool upgradeTo3000 {
+        public bool RequireUpgrade {
             get {
-                return ((bool)(this["upgradeTo3000"]));
+                return ((bool)(this["RequireUpgrade"]));
             }
             set {
-                this["upgradeTo3000"] = value;
+                this["RequireUpgrade"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool keep_window_open {
+            get {
+                return ((bool)(this["keep_window_open"]));
+            }
+            set {
+                this["keep_window_open"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string password_secure {
+            get {
+                return ((string)(this["password_secure"]));
+            }
+            set {
+                this["password_secure"] = value;
             }
         }
     }

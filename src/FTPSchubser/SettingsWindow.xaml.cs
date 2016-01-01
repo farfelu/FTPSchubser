@@ -23,10 +23,36 @@ namespace FTPSchubser
         {
             this.Owner = owner;
             InitializeComponent();
+
+            txtHost.Text = App.Settings.Host;
+            txtPort.Text = App.Settings.Port.ToString();
+            cbPassiveMode.IsChecked = App.Settings.PassiveMode;
+            txtUser.Text = App.Settings.User;
+            txtPassword.Password = App.Settings.Password;
+            txtServerPath.Text = App.Settings.ServerPath;
+            txtUrlPath.Text = App.Settings.UrlPath;
+            cbCheckOverwrite.IsChecked = App.Settings.CheckOverwrite;
+            cbCopyClipboard.IsChecked = App.Settings.CopyClipboard;
+            cbMinify.IsChecked = App.Settings.Minify;
+            cbKeepWindowOpen.IsChecked = App.Settings.KeepWindowOpen;
         }
 
         private void btn_save_Click(object sender, RoutedEventArgs e)
         {
+            App.Settings.Host = txtHost.Text;
+            App.Settings.Port = int.Parse(txtPort.Text);
+            App.Settings.PassiveMode = cbPassiveMode.IsChecked.Value;
+            App.Settings.User = txtUser.Text;
+            App.Settings.Password = txtPassword.Password;
+            App.Settings.ServerPath = txtServerPath.Text;
+            App.Settings.UrlPath = txtUrlPath.Text;
+            App.Settings.CheckOverwrite = cbCheckOverwrite.IsChecked.Value;
+            App.Settings.CopyClipboard = cbCopyClipboard.IsChecked.Value;
+            App.Settings.Minify = cbMinify.IsChecked.Value;
+            App.Settings.KeepWindowOpen = cbKeepWindowOpen.IsChecked.Value;
+
+            App.Settings.Save();
+
             this.Close();
         }
 
