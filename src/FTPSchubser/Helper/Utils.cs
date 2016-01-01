@@ -9,19 +9,24 @@ namespace FTPSchubser.Helper
     class Utils
     {
 
-        private static string FormatUrl(string protocol, string host, string path, string fileName, int? port = null)
+        public static string FormatUrl(string protocol, string host, string path, string fileName, int? port = null)
         {
-            return $"{protocol}://{host}{(port == null ? "" : ":" + port)}{(path == null ? "" : "/" + path)}{(fileName == null ? "" : "/" + fileName)}";
+            if (string.IsNullOrWhiteSpace(host))
+            {
+                return null;
+            }
+
+            return $"{protocol}://{host}{(port == null ? "" : ":" + port)}{(string.IsNullOrWhiteSpace(path) ? "" : "/" + path)}{(string.IsNullOrWhiteSpace(fileName) ? "" : "/" + fileName)}";
         }
 
-        public static string FormatFTPUrl(string host, string path = null, string fileName = null, int port = 21)
+        public static string FormatFTPUrl(string host, string path = null, string fileName = null, int? port = 21)
         {
             return FormatUrl("ftp", host, path, fileName, port);
         }
 
-        public static string FormatHTTPUrl(string host, string path, string fileName)
+        public static string FormatHTTPUrl(string url, string fileName)
         {
-            return FormatUrl("http", host, path, fileName);
+            return $"{url}{fileName}";
         }
 
         // from http://stackoverflow.com/a/4975942
