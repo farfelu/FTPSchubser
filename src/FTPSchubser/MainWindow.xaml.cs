@@ -20,9 +20,14 @@ namespace FTPSchubser
     /// </summary>
     public partial class MainWindow : Window
     {
-        public MainWindow()
+        public MainWindow(string[] args = null)
         {
             InitializeComponent();
+
+            if (args != null && args.Length > 0)
+            {
+                UploadFilesAsync(args, true);
+            }
         }
 
         private void btn_settings_Click(object sender, RoutedEventArgs e)

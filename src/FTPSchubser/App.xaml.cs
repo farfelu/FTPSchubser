@@ -19,5 +19,11 @@ namespace FTPSchubser
         {
             Settings = new Helper.SettingsHelper();
         }
+
+        private void Application_Startup(object sender, StartupEventArgs e)
+        {
+            var wnd = new MainWindow(e.Args);
+            wnd.Show();
+        }
     }
 }
