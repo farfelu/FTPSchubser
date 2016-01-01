@@ -57,7 +57,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Compile Include="Helper\SecureString.cs" />
+    <Compile Include="Helper\SecureStringHelper.cs" />
     <Compile Include="Helper\SettingsHelper.cs" />
     <Compile Include="SettingsWindow.xaml.cs">
       <DependentUpon>SettingsWindow.xaml</DependentUpon>
