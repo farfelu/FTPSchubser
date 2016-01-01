@@ -62,6 +62,68 @@
     <Compile Include="SettingsWindow.xaml.cs">
       <DependentUpon>SettingsWindow.xaml</DependentUpon>
     </Compile>
+    <Compile Include="submodules\SharpZipLib\src\BZip2\BZip2.cs" />
+    <Compile Include="submodules\SharpZipLib\src\BZip2\BZip2Constants.cs" />
+    <Compile Include="submodules\SharpZipLib\src\BZip2\BZip2Exception.cs" />
+    <Compile Include="submodules\SharpZipLib\src\BZip2\BZip2InputStream.cs" />
+    <Compile Include="submodules\SharpZipLib\src\BZip2\BZip2OutputStream.cs" />
+    <Compile Include="submodules\SharpZipLib\src\Checksums\Adler32.cs" />
+    <Compile Include="submodules\SharpZipLib\src\Checksums\Crc32.cs" />
+    <Compile Include="submodules\SharpZipLib\src\Checksums\IChecksum.cs" />
+    <Compile Include="submodules\SharpZipLib\src\Checksums\StrangeCrc.cs" />
+    <Compile Include="submodules\SharpZipLib\src\Core\FileSystemScanner.cs" />
+    <Compile Include="submodules\SharpZipLib\src\Core\INameTransform.cs" />
+    <Compile Include="submodules\SharpZipLib\src\Core\IScanFilter.cs" />
+    <Compile Include="submodules\SharpZipLib\src\Core\NameFilter.cs" />
+    <Compile Include="submodules\SharpZipLib\src\Core\PathFilter.cs" />
+    <Compile Include="submodules\SharpZipLib\src\Core\StreamUtils.cs" />
+    <Compile Include="submodules\SharpZipLib\src\Core\WindowsPathUtils.cs" />
+    <Compile Include="submodules\SharpZipLib\src\Encryption\PkzipClassic.cs" />
+    <Compile Include="submodules\SharpZipLib\src\Encryption\ZipAESStream.cs" />
+    <Compile Include="submodules\SharpZipLib\src\Encryption\ZipAESTransform.cs" />
+    <Compile Include="submodules\SharpZipLib\src\GZip\GZipConstants.cs" />
+    <Compile Include="submodules\SharpZipLib\src\GZip\GZipException.cs" />
+    <Compile Include="submodules\SharpZipLib\src\GZip\GzipInputStream.cs" />
+    <Compile Include="submodules\SharpZipLib\src\GZip\GzipOutputStream.cs" />
+    <Compile Include="submodules\SharpZipLib\src\Lzw\LzwConstants.cs" />
+    <Compile Include="submodules\SharpZipLib\src\Lzw\LzwException.cs" />
+    <Compile Include="submodules\SharpZipLib\src\Lzw\LzwInputStream.cs" />
+    <Compile Include="submodules\SharpZipLib\src\Main.cs" />
+    <Compile Include="submodules\SharpZipLib\src\SharpZipBaseException.cs" />
+    <Compile Include="submodules\SharpZipLib\src\Tar\InvalidHeaderException.cs" />
+    <Compile Include="submodules\SharpZipLib\src\Tar\TarArchive.cs" />
+    <Compile Include="submodules\SharpZipLib\src\Tar\TarBuffer.cs" />
+    <Compile Include="submodules\SharpZipLib\src\Tar\TarEntry.cs" />
+    <Compile Include="submodules\SharpZipLib\src\Tar\TarException.cs" />
+    <Compile Include="submodules\SharpZipLib\src\Tar\TarHeader.cs" />
+    <Compile Include="submodules\SharpZipLib\src\Tar\TarInputStream.cs" />
+    <Compile Include="submodules\SharpZipLib\src\Tar\TarOutputStream.cs" />
+    <Compile Include="submodules\SharpZipLib\src\Zip\Compression\Deflater.cs" />
+    <Compile Include="submodules\SharpZipLib\src\Zip\Compression\DeflaterConstants.cs" />
+    <Compile Include="submodules\SharpZipLib\src\Zip\Compression\DeflaterEngine.cs" />
+    <Compile Include="submodules\SharpZipLib\src\Zip\Compression\DeflaterHuffman.cs" />
+    <Compile Include="submodules\SharpZipLib\src\Zip\Compression\DeflaterPending.cs" />
+    <Compile Include="submodules\SharpZipLib\src\Zip\Compression\Inflater.cs" />
+    <Compile Include="submodules\SharpZipLib\src\Zip\Compression\InflaterDynHeader.cs" />
+    <Compile Include="submodules\SharpZipLib\src\Zip\Compression\InflaterHuffmanTree.cs" />
+    <Compile Include="submodules\SharpZipLib\src\Zip\Compression\PendingBuffer.cs" />
+    <Compile Include="submodules\SharpZipLib\src\Zip\Compression\Streams\DeflaterOutputStream.cs" />
+    <Compile Include="submodules\SharpZipLib\src\Zip\Compression\Streams\InflaterInputStream.cs" />
+    <Compile Include="submodules\SharpZipLib\src\Zip\Compression\Streams\OutputWindow.cs" />
+    <Compile Include="submodules\SharpZipLib\src\Zip\Compression\Streams\StreamManipulator.cs" />
+    <Compile Include="submodules\SharpZipLib\src\Zip\FastZip.cs" />
+    <Compile Include="submodules\SharpZipLib\src\Zip\IEntryFactory.cs" />
+    <Compile Include="submodules\SharpZipLib\src\Zip\WindowsNameTransform.cs" />
+    <Compile Include="submodules\SharpZipLib\src\Zip\ZipConstants.cs" />
+    <Compile Include="submodules\SharpZipLib\src\Zip\ZipEntry.cs" />
+    <Compile Include="submodules\SharpZipLib\src\Zip\ZipEntryFactory.cs" />
+    <Compile Include="submodules\SharpZipLib\src\Zip\ZipException.cs" />
+    <Compile Include="submodules\SharpZipLib\src\Zip\ZipExtraData.cs" />
+    <Compile Include="submodules\SharpZipLib\src\Zip\ZipFile.cs" />
+    <Compile Include="submodules\SharpZipLib\src\Zip\ZipHelperStream.cs" />
+    <Compile Include="submodules\SharpZipLib\src\Zip\ZipInputStream.cs" />
+    <Compile Include="submodules\SharpZipLib\src\Zip\ZipNameTransform.cs" />
+    <Compile Include="submodules\SharpZipLib\src\Zip\ZipOutputStream.cs" />
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -106,9 +168,13 @@
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
     </None>
     <AppDesigner Include="Properties\" />
+    <None Include="submodules\SharpZipLib\src\ICSharpCode.SharpZLib.prjx" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="submodules\SharpZipLib\src\ICSharpCode.SharpZLib.csproj" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
