@@ -1,0 +1,192 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{F331C5D9-1929-4620-8FD8-AEF0C8FEF5E3}</ProjectGuid>
+    <OutputType>WinExe</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>FTPSchubser</RootNamespace>
+    <AssemblyName>FTPSchubser</AssemblyName>
+    <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <ProjectTypeGuids>{60dc8134-eba5-43b8-bcc9-bb4bc16c2548};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
+    <WarningLevel>4</WarningLevel>
+    <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup>
+    <ApplicationManifest>app.manifest</ApplicationManifest>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Security" />
+    <Reference Include="System.Web.Extensions" />
+    <Reference Include="System.Xml" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Xaml">
+      <RequiredTargetFramework>4.0</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="WindowsBase" />
+    <Reference Include="PresentationCore" />
+    <Reference Include="PresentationFramework" />
+  </ItemGroup>
+  <ItemGroup>
+    <ApplicationDefinition Include="App.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </ApplicationDefinition>
+    <Compile Include="Helper\UploadFile.cs" />
+    <Compile Include="Helper\SecureStringHelper.cs" />
+    <Compile Include="Helper\SettingsHelper.cs" />
+    <Compile Include="SettingsWindow.xaml.cs">
+      <DependentUpon>SettingsWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="submodules\SharpZipLib\src\BZip2\BZip2.cs" />
+    <Compile Include="submodules\SharpZipLib\src\BZip2\BZip2Constants.cs" />
+    <Compile Include="submodules\SharpZipLib\src\BZip2\BZip2Exception.cs" />
+    <Compile Include="submodules\SharpZipLib\src\BZip2\BZip2InputStream.cs" />
+    <Compile Include="submodules\SharpZipLib\src\BZip2\BZip2OutputStream.cs" />
+    <Compile Include="submodules\SharpZipLib\src\Checksums\Adler32.cs" />
+    <Compile Include="submodules\SharpZipLib\src\Checksums\Crc32.cs" />
+    <Compile Include="submodules\SharpZipLib\src\Checksums\IChecksum.cs" />
+    <Compile Include="submodules\SharpZipLib\src\Checksums\StrangeCrc.cs" />
+    <Compile Include="submodules\SharpZipLib\src\Core\FileSystemScanner.cs" />
+    <Compile Include="submodules\SharpZipLib\src\Core\INameTransform.cs" />
+    <Compile Include="submodules\SharpZipLib\src\Core\IScanFilter.cs" />
+    <Compile Include="submodules\SharpZipLib\src\Core\NameFilter.cs" />
+    <Compile Include="submodules\SharpZipLib\src\Core\PathFilter.cs" />
+    <Compile Include="submodules\SharpZipLib\src\Core\StreamUtils.cs" />
+    <Compile Include="submodules\SharpZipLib\src\Core\WindowsPathUtils.cs" />
+    <Compile Include="submodules\SharpZipLib\src\Encryption\PkzipClassic.cs" />
+    <Compile Include="submodules\SharpZipLib\src\Encryption\ZipAESStream.cs" />
+    <Compile Include="submodules\SharpZipLib\src\Encryption\ZipAESTransform.cs" />
+    <Compile Include="submodules\SharpZipLib\src\GZip\GZipConstants.cs" />
+    <Compile Include="submodules\SharpZipLib\src\GZip\GZipException.cs" />
+    <Compile Include="submodules\SharpZipLib\src\GZip\GzipInputStream.cs" />
+    <Compile Include="submodules\SharpZipLib\src\GZip\GzipOutputStream.cs" />
+    <Compile Include="submodules\SharpZipLib\src\Lzw\LzwConstants.cs" />
+    <Compile Include="submodules\SharpZipLib\src\Lzw\LzwException.cs" />
+    <Compile Include="submodules\SharpZipLib\src\Lzw\LzwInputStream.cs" />
+    <Compile Include="submodules\SharpZipLib\src\Main.cs" />
+    <Compile Include="submodules\SharpZipLib\src\SharpZipBaseException.cs" />
+    <Compile Include="submodules\SharpZipLib\src\Tar\InvalidHeaderException.cs" />
+    <Compile Include="submodules\SharpZipLib\src\Tar\TarArchive.cs" />
+    <Compile Include="submodules\SharpZipLib\src\Tar\TarBuffer.cs" />
+    <Compile Include="submodules\SharpZipLib\src\Tar\TarEntry.cs" />
+    <Compile Include="submodules\SharpZipLib\src\Tar\TarException.cs" />
+    <Compile Include="submodules\SharpZipLib\src\Tar\TarHeader.cs" />
+    <Compile Include="submodules\SharpZipLib\src\Tar\TarInputStream.cs" />
+    <Compile Include="submodules\SharpZipLib\src\Tar\TarOutputStream.cs" />
+    <Compile Include="submodules\SharpZipLib\src\Zip\Compression\Deflater.cs" />
+    <Compile Include="submodules\SharpZipLib\src\Zip\Compression\DeflaterConstants.cs" />
+    <Compile Include="submodules\SharpZipLib\src\Zip\Compression\DeflaterEngine.cs" />
+    <Compile Include="submodules\SharpZipLib\src\Zip\Compression\DeflaterHuffman.cs" />
+    <Compile Include="submodules\SharpZipLib\src\Zip\Compression\DeflaterPending.cs" />
+    <Compile Include="submodules\SharpZipLib\src\Zip\Compression\Inflater.cs" />
+    <Compile Include="submodules\SharpZipLib\src\Zip\Compression\InflaterDynHeader.cs" />
+    <Compile Include="submodules\SharpZipLib\src\Zip\Compression\InflaterHuffmanTree.cs" />
+    <Compile Include="submodules\SharpZipLib\src\Zip\Compression\PendingBuffer.cs" />
+    <Compile Include="submodules\SharpZipLib\src\Zip\Compression\Streams\DeflaterOutputStream.cs" />
+    <Compile Include="submodules\SharpZipLib\src\Zip\Compression\Streams\InflaterInputStream.cs" />
+    <Compile Include="submodules\SharpZipLib\src\Zip\Compression\Streams\OutputWindow.cs" />
+    <Compile Include="submodules\SharpZipLib\src\Zip\Compression\Streams\StreamManipulator.cs" />
+    <Compile Include="submodules\SharpZipLib\src\Zip\FastZip.cs" />
+    <Compile Include="submodules\SharpZipLib\src\Zip\IEntryFactory.cs" />
+    <Compile Include="submodules\SharpZipLib\src\Zip\WindowsNameTransform.cs" />
+    <Compile Include="submodules\SharpZipLib\src\Zip\ZipConstants.cs" />
+    <Compile Include="submodules\SharpZipLib\src\Zip\ZipEntry.cs" />
+    <Compile Include="submodules\SharpZipLib\src\Zip\ZipEntryFactory.cs" />
+    <Compile Include="submodules\SharpZipLib\src\Zip\ZipException.cs" />
+    <Compile Include="submodules\SharpZipLib\src\Zip\ZipExtraData.cs" />
+    <Compile Include="submodules\SharpZipLib\src\Zip\ZipFile.cs" />
+    <Compile Include="submodules\SharpZipLib\src\Zip\ZipHelperStream.cs" />
+    <Compile Include="submodules\SharpZipLib\src\Zip\ZipInputStream.cs" />
+    <Compile Include="submodules\SharpZipLib\src\Zip\ZipNameTransform.cs" />
+    <Compile Include="submodules\SharpZipLib\src\Zip\ZipOutputStream.cs" />
+    <Page Include="MainWindow.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Compile Include="App.xaml.cs">
+      <DependentUpon>App.xaml</DependentUpon>
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Helper\FTPHelper.cs" />
+    <Compile Include="Helper\URLHelper.cs" />
+    <Compile Include="Helper\Utils.cs" />
+    <Compile Include="Helper\ZIPHelper.cs" />
+    <Compile Include="MainWindow.xaml.cs">
+      <DependentUpon>MainWindow.xaml</DependentUpon>
+      <SubType>Code</SubType>
+    </Compile>
+    <Page Include="SettingsWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Properties\AssemblyInfo.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+    <Compile Include="Properties\Settings.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Settings.settings</DependentUpon>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+    </Compile>
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <None Include="app.manifest" />
+    <None Include="Properties\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+    </None>
+    <AppDesigner Include="Properties\" />
+    <None Include="submodules\SharpZipLib\src\ICSharpCode.SharpZLib.prjx" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="App.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="submodules\SharpZipLib\src\ICSharpCode.SharpZLib.csproj" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

@@ -1,0 +1,3 @@
+[submodule "src/FTPSchubser/submodules/SharpZipLib"]
+	path = src/FTPSchubser/submodules/SharpZipLib
+	url = https://github.com/icsharpcode/SharpZipLib.git

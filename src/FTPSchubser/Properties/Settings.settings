@@ -24,25 +24,22 @@
       <Value Profile="(Default)">True</Value>
     </Setting>
     <Setting Name="shorten" Type="System.Boolean" Scope="User">
-      <Value Profile="(Default)">False</Value>
+      <Value Profile="(Default)">True</Value>
     </Setting>
     <Setting Name="url" Type="System.String" Scope="User">
       <Value Profile="(Default)" />
     </Setting>
-    <Setting Name="shortenservice" Type="System.Int32" Scope="User">
-      <Value Profile="(Default)">0</Value>
-    </Setting>
     <Setting Name="prompt_overwrite" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">True</Value>
     </Setting>
-    <Setting Name="UpgradeTo2200" Type="System.Boolean" Scope="User">
+    <Setting Name="RequireUpgrade" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">True</Value>
     </Setting>
-    <Setting Name="downscale" Type="System.Boolean" Scope="User">
+    <Setting Name="keep_window_open" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">False</Value>
     </Setting>
-    <Setting Name="downscale_size" Type="System.Int32" Scope="User">
-      <Value Profile="(Default)">1024</Value>
+    <Setting Name="password_secure" Type="System.String" Scope="User">
+      <Value Profile="(Default)" />
     </Setting>
   </Settings>
 </SettingsFile>

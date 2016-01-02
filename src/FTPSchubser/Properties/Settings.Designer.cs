@@ -109,7 +109,7 @@ namespace FTPSchubser.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        [global::System.Configuration.DefaultSettingValueAttribute("True")]
         public bool shorten {
             get {
                 return ((bool)(this["shorten"]));
@@ -133,18 +133,6 @@ namespace FTPSchubser.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("0")]
-        public int shortenservice {
-            get {
-                return ((int)(this["shortenservice"]));
-            }
-            set {
-                this["shortenservice"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("True")]
         public bool prompt_overwrite {
             get {
@@ -158,36 +146,36 @@ namespace FTPSchubser.Properties {
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("True")]
-        public bool UpgradeTo2200 {
+        public bool RequireUpgrade {
             get {
-                return ((bool)(this["UpgradeTo2200"]));
+                return ((bool)(this["RequireUpgrade"]));
             }
             set {
-                this["UpgradeTo2200"] = value;
+                this["RequireUpgrade"] = value;
             }
         }
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("False")]
-        public bool downscale {
+        public bool keep_window_open {
             get {
-                return ((bool)(this["downscale"]));
+                return ((bool)(this["keep_window_open"]));
             }
             set {
-                this["downscale"] = value;
+                this["keep_window_open"] = value;
             }
         }
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("1024")]
-        public int downscale_size {
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string password_secure {
             get {
-                return ((int)(this["downscale_size"]));
+                return ((string)(this["password_secure"]));
             }
             set {
-                this["downscale_size"] = value;
+                this["password_secure"] = value;
             }
         }
     }
