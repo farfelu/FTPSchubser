@@ -11,7 +11,7 @@ using System.Windows;
 [assembly: AssemblyTitle("FTPSchubser")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("")]
+[assembly: AssemblyCompany("Farfelu")]
 [assembly: AssemblyProduct("FTPSchubser")]
 [assembly: AssemblyCopyright("Copyright © 2015")]
 [assembly: AssemblyTrademark("")]
