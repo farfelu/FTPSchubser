@@ -33,8 +33,12 @@ namespace FTPSchubser
 
         private void btn_settings_Click(object sender, RoutedEventArgs e)
         {
-            var settingsWindow = new SettingsWindow(this);
-            settingsWindow.ShowDialog();
+            new SettingsWindow(this).ShowDialog();
+        }
+
+        private void btn_fileList_Click(object sender, RoutedEventArgs e)
+        {
+            new FileListWindow(this).ShowDialog();
         }
 
         private void Window_Drop(object sender, DragEventArgs e)
