@@ -7,6 +7,7 @@
         mc:Ignorable="d"
         Title="FileList" ResizeMode="CanResizeWithGrip" ShowInTaskbar="False" Topmost="True" WindowStartupLocation="CenterOwner" Width="500" Height="400" WindowStyle="ToolWindow">
     <Grid>
-        
+        <DataGrid x:Name="gridFiles" SelectionMode="Single" IsReadOnly="True">
+        </DataGrid>
     </Grid>
 </Window>
