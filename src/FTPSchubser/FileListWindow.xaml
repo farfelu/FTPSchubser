@@ -5,9 +5,64 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:FTPSchubser"
         mc:Ignorable="d"
-        Title="FileList" ResizeMode="CanResizeWithGrip" ShowInTaskbar="False" Topmost="True" WindowStartupLocation="CenterOwner" Width="500" Height="400" WindowStyle="ToolWindow">
+        Title="FileList" ResizeMode="CanResizeWithGrip" ShowInTaskbar="False" Topmost="True" WindowStartupLocation="CenterOwner" MinWidth="600" MinHeight="400" Width="600" Height="250" WindowStyle="ToolWindow" Cursor="Wait">
     <Grid>
-        <DataGrid x:Name="gridFiles" SelectionMode="Single" IsReadOnly="True">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition/>
+            <ColumnDefinition Width="Auto"/>
+        </Grid.ColumnDefinitions>
+        <ProgressBar x:Name="progress" IsIndeterminate="True" Height="20" Width="100" HorizontalAlignment="Center" VerticalAlignment="Center" />
+        <DataGrid x:Name="gridFiles" SelectionMode="Single" AutoGenerateColumns="False" Visibility="Hidden" CanUserReorderColumns="False" CanUserResizeRows="False" CanUserResizeColumns="False">
+            <DataGrid.Columns>
+                <DataGridTemplateColumn Header="Date" Width="120" IsReadOnly="True">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <Label Content="{Binding Timestamp}" ContentStringFormat="yyyy-MM-dd HH:mm" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" HorizontalAlignment="Left"/>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+                <DataGridTemplateColumn Header="Size" Width="80" IsReadOnly="True">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <Label Content="{Binding SizeReadable}" HorizontalContentAlignment="Right" VerticalContentAlignment="Center"/>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+                <DataGridTemplateColumn Header="Filename" Width="*" IsReadOnly="True">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <Label Content="{Binding Filename}" VerticalContentAlignment="Center"/>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+                <DataGridTemplateColumn Header="open" Width="SizeToCells" IsReadOnly="True">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <Button Content="open" Click="btnListcopy_Click" />
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+                <DataGridTemplateColumn Header="copy" Width="SizeToHeader">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <CheckBox IsChecked="{Binding ToCopy, UpdateSourceTrigger=PropertyChanged}" HorizontalAlignment="Center" VerticalAlignment="Center" />
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+                <DataGridTemplateColumn Header="delete" Width="SizeToHeader">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <CheckBox IsChecked="{Binding ToDelete, UpdateSourceTrigger=PropertyChanged}" HorizontalAlignment="Center" VerticalAlignment="Center" />
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+            </DataGrid.Columns>
         </DataGrid>
+
+        <StackPanel Grid.Column="2">
+            <Button x:Name="btnCopy" Content="🔗" Margin="2,2,2,0" Padding="15,0,15,0" FontSize="18" Click="btnCopy_Click" />
+            <Button x:Name="btnRefresh" Content="🔃" Margin="2,2,2,0" Padding="15,0,15,0" Foreground="#FF0682B0" FontSize="18" Click="btnRefresh_Click" />
+            <Button x:Name="btnDelete" Content="❌" Margin="2,2,2,0" Padding="15,0,15,0" Foreground="#FFB00606" FontSize="18" Click="btnDelete_Click" />
+        </StackPanel>
     </Grid>
 </Window>
