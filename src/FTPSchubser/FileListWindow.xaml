@@ -5,13 +5,14 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:FTPSchubser"
         mc:Ignorable="d"
-        Title="FileList" ResizeMode="CanResizeWithGrip" ShowInTaskbar="False" Topmost="True" WindowStartupLocation="CenterOwner" MinWidth="600" MinHeight="400" Width="600" Height="250" WindowStyle="ToolWindow" Cursor="Wait">
+        Title="FileList" ResizeMode="CanResizeWithGrip" ShowInTaskbar="True" Topmost="False" WindowStartupLocation="CenterOwner" MinWidth="600" MinHeight="400" Width="600" Height="250" WindowStyle="ToolWindow">
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition/>
             <ColumnDefinition Width="Auto"/>
         </Grid.ColumnDefinitions>
-        <ProgressBar x:Name="progress" IsIndeterminate="True" Height="20" Width="100" HorizontalAlignment="Center" VerticalAlignment="Center" />
+        <ProgressBar x:Name="progress_bar" IsIndeterminate="True" Height="30" Width="200" HorizontalAlignment="Center" VerticalAlignment="Center" />
+        <Label x:Name="progress_label" Height="30" Width="200" HorizontalAlignment="Center" VerticalAlignment="Center" Content="Test" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" />
         <DataGrid x:Name="gridFiles" SelectionMode="Single" AutoGenerateColumns="False" Visibility="Hidden" CanUserReorderColumns="False" CanUserResizeRows="False" CanUserResizeColumns="False">
             <DataGrid.Columns>
                 <DataGridTemplateColumn Header="Date" Width="120" IsReadOnly="True">
