@@ -19,29 +19,39 @@ namespace FTPSchubser.Helper
 
             foreach (var url in urls)
             {
-                var httpWebRequest = (HttpWebRequest)WebRequest.Create("https://www.googleapis.com/urlshortener/v1/url?key=API_KEY");
-                httpWebRequest.ContentType = "application/json";
-                httpWebRequest.Method = "POST";
-                using (var streamWriter = new StreamWriter(await httpWebRequest.GetRequestStreamAsync()))
+                try
                 {
-                    var jsonObject = new { longUrl = url };
+                    var httpWebRequest = (HttpWebRequest)WebRequest.Create("https://www.googleapis.com/urlshortener/v1/url?key=API_KEY");
+                    httpWebRequest.ContentType = "application/json";
+                    httpWebRequest.Method = "POST";
+                    using (var streamWriter = new StreamWriter(await httpWebRequest.GetRequestStreamAsync()))
+                    {
+                        var jsonObject = new { longUrl = url };
 
-                    var jsonString = serializer.Serialize(jsonObject);
+                        var jsonString = serializer.Serialize(jsonObject);
 
-                    streamWriter.Write(jsonString);
-                    streamWriter.Flush();
-                    streamWriter.Close();
+                        streamWriter.Write(jsonString);
+                        streamWriter.Flush();
+                        streamWriter.Close();
+                    }
+
+                    var httpResponse = (HttpWebResponse)await httpWebRequest.GetResponseAsync();
+                    using (var streamReader = new StreamReader(httpResponse.GetResponseStream()))
+                    {
+                        var result = await streamReader.ReadToEndAsync();
+
+                        var json = serializer.Deserialize<GooGlResponse>(result);
+
+                        ret.Add(json.id);
+                    }
                 }
-
-                var httpResponse = (HttpWebResponse)await httpWebRequest.GetResponseAsync();
-                using (var streamReader = new StreamReader(httpResponse.GetResponseStream()))
+                // if it fails return the normal link, don't minify
+                // goo.gl blocks certain file extensions, so it won't minify them
+                catch (Exception)
                 {
-                    var result = await streamReader.ReadToEndAsync();
-
-                    var json = serializer.Deserialize<GooGlResponse>(result);
-
-                    ret.Add(json.id);
+                    ret.Add(url);
                 }
+                
             }
 
             return ret;
