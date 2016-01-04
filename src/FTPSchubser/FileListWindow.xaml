@@ -14,6 +14,11 @@
         <ProgressBar x:Name="progress_bar" IsIndeterminate="True" Height="30" Width="200" HorizontalAlignment="Center" VerticalAlignment="Center" />
         <Label x:Name="progress_label" Height="30" Width="200" HorizontalAlignment="Center" VerticalAlignment="Center" Content="Test" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" />
         <DataGrid x:Name="gridFiles" SelectionMode="Single" AutoGenerateColumns="False" Visibility="Hidden" CanUserReorderColumns="False" CanUserResizeRows="False" CanUserResizeColumns="False">
+            <DataGrid.Resources>
+                <Style TargetType="DataGridRow">
+                    <EventSetter Event="MouseDoubleClick" Handler="gridFiles_RowDoubleClick"/>
+                </Style>
+            </DataGrid.Resources>
             <DataGrid.Columns>
                 <DataGridTemplateColumn Header="Date" Width="120" IsReadOnly="True">
                     <DataGridTemplateColumn.CellTemplate>

@@ -83,6 +83,23 @@ namespace FTPSchubser
             HideProgress();
         }
 
+        private async Task CopyLinksAsync(IEnumerable<FTPFileListItem> files)
+        {
+            var urls = files.Select(x => x.Url);
+
+            if (App.Settings.Minify)
+            {
+                ShowProgress("minifying links");
+
+                urls = await URLHelper.ShortenUrlsAsync(urls);
+
+                HideProgress();
+            }
+
+            // always add newline at the end
+            Clipboard.SetText(string.Join("\r\n", urls) + "\r\n");
+        }
+
         private void btnListcopy_Click(object sender, RoutedEventArgs e)
         {
             var obj = ((FrameworkElement)sender).DataContext as FTPFileListItem;
@@ -97,27 +114,15 @@ namespace FTPSchubser
             }
 
             var files = Files.Where(x => x.ToCopy);
-            
-            var urls = files.Select(x => x.Url);
 
-            if (App.Settings.Minify)
-            {
-                ShowProgress("minifying links");
-
-                urls = await URLHelper.ShortenUrlsAsync(urls);
-
-                HideProgress();
-            }
-
-            // always add newline at the end
-            Clipboard.SetText(string.Join("\r\n", urls) + "\r\n");
+            await CopyLinksAsync(files);
 
             //uncheck the copied files
             foreach (var file in files)
             {
                 file.ToCopy = false;
             }
-            
+
         }
 
         private void btnRefresh_Click(object sender, RoutedEventArgs e)
@@ -130,7 +135,25 @@ namespace FTPSchubser
 
         }
 
-        private class FTPFileListItem: INotifyPropertyChanged
+        private async void gridFiles_RowDoubleClick(object sender, MouseButtonEventArgs e)
+        {
+            var row = sender as DataGridRow;
+            if (row == null)
+            {
+                return;
+            }
+
+            var file = row.Item as FTPFileListItem;
+
+            if (file == null)
+            {
+                return;
+            }
+            
+            await CopyLinksAsync(new FTPFileListItem[] { file });            
+        }
+
+        private class FTPFileListItem : INotifyPropertyChanged
         {
             public DateTime? Timestamp { get; set; }
             public long Size { get; set; }
