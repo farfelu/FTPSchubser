@@ -18,7 +18,30 @@
                 <Style TargetType="DataGridRow">
                     <EventSetter Event="MouseDoubleClick" Handler="gridFiles_RowDoubleClick"/>
                 </Style>
+                <Style TargetType="DataGridCell">
+                    <Style.Triggers>
+                        <Trigger Property="IsSelected" Value="True">
+                            <Setter Property="Background" Value="{x:Null}" />
+                            <Setter Property="BorderBrush" Value="{x:Null}" />
+                        </Trigger>
+                    </Style.Triggers>
+                </Style>
             </DataGrid.Resources>
+            <DataGrid.RowStyle>
+                <Style TargetType="DataGridRow">
+                    <Style.Triggers>
+                        <DataTrigger Binding="{Binding IsCopied}" Value="True">
+                            <Setter Property="Background" Value="#FFBBDAA5"></Setter>
+                        </DataTrigger>
+                        <DataTrigger Binding="{Binding ToDelete}" Value="True">
+                            <Setter Property="Background" Value="#FFE06363"></Setter>
+                        </DataTrigger>
+                        <DataTrigger Binding="{Binding ToCopy}" Value="True">
+                            <Setter Property="Background" Value="#FFA5CCDA"></Setter>
+                        </DataTrigger>
+                    </Style.Triggers>
+                </Style>
+            </DataGrid.RowStyle>
             <DataGrid.Columns>
                 <DataGridTemplateColumn Header="Date" Width="120" IsReadOnly="True">
                     <DataGridTemplateColumn.CellTemplate>
@@ -66,9 +89,9 @@
         </DataGrid>
 
         <StackPanel Grid.Column="2">
-            <Button x:Name="btnCopy" Content="🔗" Margin="2,2,2,0" Padding="15,0,15,0" FontSize="18" Click="btnCopy_Click" />
-            <Button x:Name="btnRefresh" Content="🔃" Margin="2,2,2,0" Padding="15,0,15,0" Foreground="#FF0682B0" FontSize="18" Click="btnRefresh_Click" />
-            <Button x:Name="btnDelete" Content="❌" Margin="2,2,2,0" Padding="15,0,15,0" Foreground="#FFB00606" FontSize="18" Click="btnDelete_Click" />
+            <Button x:Name="btnRefresh" Content="🔃" Margin="2,2,2,0" Padding="15,0,15,0" Foreground="#FF0682B0" FontSize="18" Click="btnRefresh_Click" ToolTip="refresh list from server" />
+            <Button x:Name="btnCopy" Content="🔗" Margin="2,2,2,0" Padding="15,0,15,0" FontSize="18" Click="btnCopy_Click" ToolTip="copy selected links" />
+            <Button x:Name="btnDelete" Content="❌" Margin="2,10,2,0" Padding="15,0,15,0" Foreground="#FFB00606" FontSize="18" Click="btnDelete_Click" ToolTip="delete selected links" />
         </StackPanel>
     </Grid>
 </Window>

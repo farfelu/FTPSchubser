@@ -98,6 +98,13 @@ namespace FTPSchubser
 
             // always add newline at the end
             Clipboard.SetText(string.Join("\r\n", urls) + "\r\n");
+
+            // uncheck the copied files and mark as copied
+            foreach (var file in files)
+            {
+                file.ToCopy = false;
+                file.IsCopied = true;
+            }
         }
 
         private void btnListcopy_Click(object sender, RoutedEventArgs e)
@@ -113,16 +120,14 @@ namespace FTPSchubser
                 return;
             }
 
+            foreach (var copied in Files.Where(x => x.IsCopied))
+            {
+                copied.IsCopied = false;
+            }
+
             var files = Files.Where(x => x.ToCopy);
 
             await CopyLinksAsync(files);
-
-            //uncheck the copied files
-            foreach (var file in files)
-            {
-                file.ToCopy = false;
-            }
-
         }
 
         private void btnRefresh_Click(object sender, RoutedEventArgs e)
@@ -150,7 +155,7 @@ namespace FTPSchubser
                 return;
             }
             
-            await CopyLinksAsync(new FTPFileListItem[] { file });            
+            await CopyLinksAsync(new FTPFileListItem[] { file });
         }
 
         private class FTPFileListItem : INotifyPropertyChanged
@@ -165,14 +170,37 @@ namespace FTPSchubser
             public bool ToCopy
             {
                 get { return toCopy; }
-                set { SetField(ref toCopy, value); }
+                set
+                {
+                    if (value)
+                    {
+                        ToDelete = false;
+                    }
+
+                    SetField(ref toCopy, value);
+                }
             }
 
             private bool toDelete = false;
             public bool ToDelete
             {
                 get { return toDelete; }
-                set { SetField(ref toDelete, value); }
+                set
+                {
+                    if (value)
+                    {
+                        ToCopy = false;
+                    }
+
+                    SetField(ref toDelete, value);
+                }
+            }
+
+            private bool isCopied = false;
+            public bool IsCopied
+            {
+                get { return isCopied; }
+                set { SetField(ref isCopied, value); }
             }
 
             public event PropertyChangedEventHandler PropertyChanged;
