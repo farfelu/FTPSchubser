@@ -7,7 +7,7 @@
 !define APP_NAME "FTPSchubser"
 !define COMP_NAME "Farfelu"
 !define WEB_SITE "https://github.com/farfelu/FTPSchubser"
-!define VERSION "3.0.0.0"
+!define VERSION "3.1.0.0"
 !define COPYRIGHT "© Farfelu 2016"
 !define DESCRIPTION "FTPSchubser"
 !define INSTALLER_NAME "FTPSchubserInstall.exe"
