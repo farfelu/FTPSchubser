@@ -60,6 +60,9 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="FileListWindow.xaml.cs">
+      <DependentUpon>FileListWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Helper\UploadFile.cs" />
     <Compile Include="Helper\SecureStringHelper.cs" />
     <Compile Include="Helper\SettingsHelper.cs" />
@@ -128,6 +131,10 @@
     <Compile Include="submodules\SharpZipLib\src\Zip\ZipInputStream.cs" />
     <Compile Include="submodules\SharpZipLib\src\Zip\ZipNameTransform.cs" />
     <Compile Include="submodules\SharpZipLib\src\Zip\ZipOutputStream.cs" />
+    <Page Include="FileListWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>

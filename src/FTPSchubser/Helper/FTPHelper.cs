@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Net;
@@ -153,6 +154,18 @@ namespace FTPSchubser.Helper
             return ret;
         }
 
+        public async Task DeleteFilesAsync(IEnumerable<string> filenames)
+        {
+            foreach (var filename in filenames)
+            {
+                var ftpUrl = Utils.FormatFTPUrl(Host, Path, filename, Port);
+
+                var request = CreateFTPRequest(ftpUrl, WebRequestMethods.Ftp.DeleteFile);
+                
+                var response = (FtpWebResponse)await request.GetResponseAsync();
+            }
+        }
+
         public class FTPFile
         {
             public bool IsDirectory { get; set; }
@@ -182,7 +195,7 @@ namespace FTPSchubser.Helper
                                             @"(?:" +                                    // non matching group for format: Dec 31 18:27
                                                 @"(?<month>\w{3})" +                    // match month name
                                                 @"\s+" +                                //
-                                                @"(?<day>\d{2})" +                      // match day
+                                                @"(?<day>\d{1,2})" +                    // match day
                                                 @"\s+" +                                //
                                                 @"(?<hours>\d{1,2}):(?<minutes>\d{2})" +  // match hours:minutes
                                             @")" +                                      //
@@ -209,26 +222,32 @@ namespace FTPSchubser.Helper
 
                 // try to figure out timestamp
                 var timestampString = match.Groups["timestamp"].Value;
+
+                //clean up timestamp string by removing double spaces
+                timestampString = timestampString.Replace("  ", " ");
+
                 DateTime timestampTemp;
                 DateTime? timestamp = null;
-                if (DateTime.TryParse(timestampString, out timestampTemp))
+
+                if (!Regex.Match(timestampString, "[0-9]{4}").Success)
+                {
+                    timestampString += $" {DateTime.Now.Year}";
+                }
+
+                if (DateTime.TryParseExact(timestampString, new string[] { "MMM dd HH:mm yyyy", "MMM d HH:mm yyyy" }, CultureInfo.InvariantCulture, DateTimeStyles.None, out timestampTemp))
                 {
                     timestamp = timestampTemp;
                 }
-                else
+                else if (DateTime.TryParse(timestampString, out timestampTemp))
                 {
-                    // didn't work, so we try adding current year to it
-                    if (DateTime.TryParseExact(timestampString + $" {DateTime.Now.Year}", "MMM dd HH:mm yyyy", null, System.Globalization.DateTimeStyles.None, out timestampTemp))
-                    {
-                        // it worked! now check if it isn't in the future, if so, use the last year...
-                        if (DateTime.Now < timestampTemp)
-                        {
-                            // date is now in the future, so subtract a year.
-                            timestampTemp = timestampTemp.AddYears(-1);
-                        }
+                    timestamp = timestampTemp;
+                }
 
-                        timestamp = timestampTemp;
-                    }
+                // check if it isn't in the future, if so, use the last year...
+                if (timestamp.HasValue && DateTime.Now < timestamp.Value)
+                {
+                    // date is now in the future, so subtract a year.
+                    timestamp = timestamp.Value.AddYears(-1);
                 }
 
                 return new FTPFile()

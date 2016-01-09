@@ -21,12 +21,14 @@
             </Grid.RowDefinitions>
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="Auto"/>
                 <ColumnDefinition/>
             </Grid.ColumnDefinitions>
 
-            <Button x:Name="btn_settings" Content="🛠" Grid.Column="0" Grid.Row="0" Margin="0,0,2,0" Padding="5,1" Click="btn_settings_Click"/>
-            <ProgressBar x:Name="progress_bar" Grid.Column="1" Grid.Row="0" Margin="2,0,0,0"/>
-            <Label x:Name="progress_label" Grid.Column="1" Grid.Row="0" Margin="2,0,0,0" Content=" " HorizontalAlignment="Left" VerticalAlignment="Center" />
+            <Button x:Name="btn_fileList" Content="📂" Grid.Column="0" Padding="5,1" Click="btn_fileList_Click"/>
+            <Button x:Name="btn_settings" Content="🛠" Grid.Column="1" Margin="2,0,0,0" Padding="5,1" Click="btn_settings_Click"/>
+            <ProgressBar x:Name="progress_bar" Grid.Column="2" Margin="2,0,0,0"/>
+            <Label x:Name="progress_label" Grid.Column="2" Margin="2,0,0,0" Content=" " HorizontalAlignment="Left" VerticalAlignment="Center" />
         </Grid>
     </Grid>
 </Window>
