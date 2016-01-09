@@ -154,6 +154,18 @@ namespace FTPSchubser.Helper
             return ret;
         }
 
+        public async Task DeleteFilesAsync(IEnumerable<string> filenames)
+        {
+            foreach (var filename in filenames)
+            {
+                var ftpUrl = Utils.FormatFTPUrl(Host, Path, filename, Port);
+
+                var request = CreateFTPRequest(ftpUrl, WebRequestMethods.Ftp.DeleteFile);
+                
+                var response = (FtpWebResponse)await request.GetResponseAsync();
+            }
+        }
+
         public class FTPFile
         {
             public bool IsDirectory { get; set; }

@@ -33,6 +33,8 @@ namespace FTPSchubser
 
         private ObservableCollection<FTPFileListItem> Files { get; set; }
 
+        private FTPHelper FTP { get; set; } = new FTPHelper(App.Settings.Host, App.Settings.User, App.Settings.Password, App.Settings.ServerPath, App.Settings.Port, App.Settings.PassiveMode);
+
         private void ShowProgress(string text = null)
         {
             gridFiles.Visibility = Visibility.Hidden;
@@ -64,9 +66,8 @@ namespace FTPSchubser
             ShowProgress("looking up files");
 
             Files = null;
-
-            var ftp = new FTPHelper(App.Settings.Host, App.Settings.User, App.Settings.Password, App.Settings.ServerPath, App.Settings.Port, App.Settings.PassiveMode);
-            var files = (await ftp.ListFilesAsync())
+            
+            var files = (await FTP.ListFilesAsync())
                         .Where(x => !x.IsDirectory)
                         .OrderByDescending(x => x.Timestamp)
                         .Select(x => new FTPFileListItem()
@@ -79,7 +80,7 @@ namespace FTPSchubser
             });
             Files = new ObservableCollection<FTPFileListItem>(files);
             gridFiles.ItemsSource = Files;
-
+            var broken = Files.Where(x => string.IsNullOrWhiteSpace(x.Filename)).ToList();
             HideProgress();
         }
 
@@ -110,7 +111,10 @@ namespace FTPSchubser
         private void btnListcopy_Click(object sender, RoutedEventArgs e)
         {
             var obj = ((FrameworkElement)sender).DataContext as FTPFileListItem;
-            System.Diagnostics.Process.Start(obj.Url);
+            if (obj != null)
+            {
+                System.Diagnostics.Process.Start(obj.Url);
+            }
         }
 
         private async void btnCopy_Click(object sender, RoutedEventArgs e)
@@ -135,9 +139,17 @@ namespace FTPSchubser
             FillDatagrid();
         }
 
-        private void btnDelete_Click(object sender, RoutedEventArgs e)
+        private async void btnDelete_Click(object sender, RoutedEventArgs e)
         {
+            if (!Files.Any(x => x.ToDelete))
+            {
+                return;
+            }
 
+            var files = Files.Where(x => x.ToDelete).Select(x => x.Filename);
+
+            await FTP.DeleteFilesAsync(files);
+            FillDatagrid();
         }
 
         private async void gridFiles_RowDoubleClick(object sender, MouseButtonEventArgs e)
